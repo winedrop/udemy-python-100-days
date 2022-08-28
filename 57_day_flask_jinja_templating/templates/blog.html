@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Blogs</title>
+</head>
+<body>
+    <!-- normally in python to read a json from api you would use a for loop to get all the data
+            for blog_post in posts:
+                <h1>\{\{blog_post['title']\}\}</h1>
+                <h2>\{\{ blog_post['subtitle']\}\}</h2>
+            
+            can pretty much to this with jinja,ß need to add \{\% stuff in the line \%\}   
+            need to specify the end of the for loop with \{\% endfor \%\} 
+            can do the same thing with if statements but need to add endif in the curly brace percent thing at the end of the if statements
+            -->
+    {% for blog_post in posts: %}
+        <h1>{{ blog_post['title'] }}</h1>
+        <h2>{{ blog_post['subtitle'] }}</h2>
+    {% endfor %}
+</body>
+</html>
