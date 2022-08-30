@@ -14,6 +14,15 @@
     <!-- lets say we want to generate a random number, which would require an import in python -->
     <!--    in this case we would put the requireds code in the python file  -->
     <h3>Random Number: {{num}}</h3>
+    <!-- this will use jinja to build the link for the blog page -->
+    <!-- it is possible to add parameters in the same way as render_template("blog.html", var=value) -->
+    <!-- <a href="\{\{ url_for('get_blog', num=3) \}\}">Go to blog</a> 
+            you would need to include the parameters in the app route and the function
+            in this case
+            @app.route('/blog/<num>')
+            def get_blog(num): ...-->
+    <a href="{{ url_for('get_blog') }}">Go to blog</a>
+    
 </body>
 <footer>
     <p>Copyright {{curYear}}, Built by A</p>
