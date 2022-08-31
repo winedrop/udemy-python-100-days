@@ -1,5 +1,9 @@
 from flask import Flask, render_template, request
 import requests
+import smtplib
+
+OWN_EMAIL = "YOUR OWN EMAIL ADDRESS"
+OWN_PASSWORD = "YOUR EMAIL ADDRESS PASSWORD"
 
 app = Flask(__name__)
 blog_endpoint = "https://api.npoint.io/c790b4d5cab58020d391"
@@ -18,7 +22,8 @@ def about_page():
 @app.route('/contact', methods=['GET', 'POST'])
 def contact_page():
     if request.method == 'POST':
-        return render_template("contact.html", messageStatus=True)
+        send_email(request.form['fullname'], request.form['user-email'], request.form['user-phone-number'], request.form['user-message'])
+        return render_template("contact.html", messageStatus=True, )
         pass
     else:
         return render_template("contact.html")
@@ -26,6 +31,13 @@ def contact_page():
 @app.route('/blog/<num>')
 def get_blog(num):
     return render_template("post.html", post=all_posts[int(num)])
+
+def send_email(name, email, phone, message):
+    email_message = f"Subject:New Message\n\nName: {name}\nEmail: {email}\nPhone: {phone}\nMessage:{message}"
+    with smtplib.SMTP("smtp.gmail.com") as connection:
+        connection.starttls()
+        connection.login(OWN_EMAIL, OWN_PASSWORD)
+        connection.sendmail(OWN_EMAIL, OWN_EMAIL, email_message)
 
 if __name__ == "__main__":
     app.run(debug=True)
