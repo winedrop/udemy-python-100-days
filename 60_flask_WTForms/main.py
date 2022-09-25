@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, redirect
 from flask_wtf import FlaskForm
-from wtforms import StringField
-from wtforms.validators import DataRequired
+from wtforms import StringField, PasswordField
+from wtforms.validators import DataRequired, Email, Length
 
 WTF_CSRF_SECRET_KEY = 'a random string'
 
@@ -10,8 +10,8 @@ app.config['SECRET_KEY'] = WTF_CSRF_SECRET_KEY
 
 # wtforms
 class LoginForm(FlaskForm):
-    name = StringField('name', validators=[DataRequired()])
-    password = StringField('password', validators=[DataRequired()])
+    email = StringField('Email: ', validators=[DataRequired(), Email()])
+    password = PasswordField('Password: ', validators=[DataRequired(), Length(min=8, max=30)])
 
 @app.route("/")
 def home():
@@ -19,15 +19,13 @@ def home():
 
 @app.route("/login", methods=['GET', 'POST'])
 def login():
-    form = LoginForm()
-    if request.method == 'GET':
-        return render_template('login.html', form=form)
-    else:
-        if form.validate_on_submit():
-            return success()
-            pass
+    login_form = LoginForm()
+    if login_form.validate_on_submit():
+        if login_form.email.data == "admin@email.com" and login_form.password.data == "12345678":
+            return render_template("success.html")
         else:
-            return denied()
+            return render_template("denied.html")
+    return render_template("login.html", form=login_form)
 
 @app.route("/success")
 def success():

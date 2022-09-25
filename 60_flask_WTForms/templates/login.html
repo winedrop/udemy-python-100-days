@@ -1,19 +1,32 @@
 <!DOCTYPE HTML>
 
 <html>
-	<head>
-		<title>Login</title>
-	</head>
-	<body>
-        <div class="container">
+
+<head>
+	<title>Login</title>
+</head>
+
+<body>
+	<div class="container">
 		<h1>Login</h1>
-        <!-- This is where our form will go. -->
-		<form method="POST" action="{{url_for('login')}}">
+		<!-- This is where our form will go. -->
+		<form method="POST" action="{{url_for('login')}}" novalidate>
+			{% if form.errors %}
+			<ul class="errors">
+				<p>Errors</p>
+				{% for field_name, field_errors in form.errors|dictsort if field_errors %}
+				{% for error in field_errors %}
+				<li>{{ form[field_name].label }}: {{ error }}</li>
+				{% endfor %}
+				{% endfor %}
+			</ul>
+			{% endif %}
 			{{ form.csrf_token }}
-			{{ form.name.label }} {{ form.name(size=30) }}
-			{{ form.password.label }} {{ form.password(size=30) }}
+			<p>{{ form.email.label }} {{ form.email(size=30) }}</p>
+			<p>{{ form.password.label }} {{ form.password(size=30) }}</p>
 			<input type="submit" value="Go">
 		</form>
-        </div>
-	</body>
+	</div>
+</body>
+
 </html>
